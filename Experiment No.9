@@ -1,95 +1,81 @@
-#include<iostream>
+#include <iostream>
 using namespace std;
 
+// Node structure
 struct Node {
     int data;
     Node* left;
     Node* right;
-
-    Node(int value) {
-        data = value;
-        left = nullptr;
-        right = nullptr;
-    }
 };
-Node* createTree(){
-      int value;
-      cout<<"Enter node value(-1 for no node):";
-      cin>>value;
-     
-      if(value==-1){ return NULL;}
-     
-      Node* newNode=new Node(value);
-     
-      cout<<"Enter a left child of"<<value<<endl;
-      newNode->left=createTree();
 
-      cout<<"Enter right child of"<<value<<endl;
-      newNode->right=createTree();
-
-      return newNode;
-}
-void preorder(Node* root){
-    if (root ==NULL) return;
-    cout << root->data << " ";
-    preorder(root->left);
-    preorder(root->right);
-}
-void inorder(Node* root){
-    if (root == NULL) return;
-    inorder(root->left);
-    cout << root->data << " ";
-    inorder(root->right);
-}
-void postorder(Node* root){
-    if (root == NULL) return;
-    postorder(root->left);
-    postorder(root->right);
-    cout << root->data << " ";
+// Create new node
+Node* createNode(int value) {
+    Node* newNode = new Node();
+    newNode->data = value;
+    newNode->left = newNode->right = NULL;
+    return newNode;
 }
 
-int main(){
-   cout<<"Create Binary Tree\n";
-   Node* root=createTree();
-   
-   int choice;
-   
-   do{
-     cout<<"----Traversal Menu----"<<endl;
-     cout<<"1.Preorder Traversal"<<endl;
-     cout<<"2.Inorder Traversal"<<endl;
-     cout<<"3.Postorder Traversal"<<endl;
-     cout<<"4.exit"<<endl;
-     cout<<"Enter your choice:";
-     cin>>choice;
-     
-     switch(choice){
-       case 1:
-          cout<<"Preorder Traversal:";
-          preorder(root);
-          cout<<endl;
-          break;
-         
-       case 2:
-          cout<<"INorder Traversal:";
-          inorder(root);
-          cout<<endl;
-          break;
-         
-       case 3:
-          cout<<"Postorder Traversal:";
-          postorder(root);
-          cout<<endl;
-          break;
-         
-       case 4:
-          cout<<"Exit the program"<<endl;
-          break;
-               
-       default:
-          cout<<"Invalid choice!! Try again."<<endl;
-     }
-   }while(choice!=4);
-   
-   return 0;
-   }
+// Build Binary Tree (using recursion)
+Node* buildTree() {
+    int value;
+    cout << "Enter value (-1 for NULL): ";
+    cin >> value;
+
+    if (value == -1)
+        return NULL;
+
+    Node* root = createNode(value);
+
+    cout << "Enter left child of " << value << endl;
+    root->left = buildTree();
+
+    cout << "Enter right child of " << value << endl;
+    root->right = buildTree();
+
+    return root;
+}
+
+// Inorder Traversal (Left, Root, Right)
+void inorder(Node* root) {
+    if (root != NULL) {
+        inorder(root->left);
+        cout << root->data << " ";
+        inorder(root->right);
+    }
+}
+
+// Preorder Traversal (Root, Left, Right)
+void preorder(Node* root) {
+    if (root != NULL) {
+        cout << root->data << " ";
+        preorder(root->left);
+        preorder(root->right);
+    }
+}
+
+// Postorder Traversal (Left, Right, Root)
+void postorder(Node* root) {
+    if (root != NULL) {
+        postorder(root->left);
+        postorder(root->right);
+        cout << root->data << " ";
+    }
+}
+
+// Main function
+int main() {
+    cout << "Build Binary Tree:\n";
+    Node* root = buildTree();
+
+    cout << "\nInorder Traversal: ";
+    inorder(root);
+
+    cout << "\nPreorder Traversal: ";
+    preorder(root);
+
+    cout << "\nPostorder Traversal: ";
+    postorder(root);
+
+    return 0;
+}
