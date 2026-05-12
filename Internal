@@ -1,0 +1,123 @@
+#include <iostream>
+using namespace std;
+
+#define SIZE 5
+
+class Deque {
+    int arr[SIZE];
+    int front, rear;
+
+public:
+    Deque() {
+        front = -1;
+        rear = -1;
+    }
+
+    // Insert at beginning
+    void insertFront(int value) {
+        // Check overflow
+        if ((front == 0 && rear == SIZE - 1) || (front == rear + 1)) {
+            cout << "Deque Overflow\n";
+            return;
+        }
+
+        // First element
+        if (front == -1) {
+            front = rear = 0;
+        }
+        // Circular condition
+        else if (front == 0) {
+            front = SIZE - 1;
+        }
+        else {
+            front--;
+        }
+
+        arr[front] = value;
+        cout << value << " inserted at beginning\n";
+    }
+
+    // Delete at beginning
+    void deleteFront() {
+        // Check underflow
+        if (front == -1) {
+            cout << "Deque Underflow\n";
+            return;
+        }
+
+        cout << arr[front] << " deleted from beginning\n";
+
+        // Only one element
+        if (front == rear) {
+            front = rear = -1;
+        }
+        // Circular condition
+        else if (front == SIZE - 1) {
+            front = 0;
+        }
+        else {
+            front++;
+        }
+    }
+
+    // Display deque
+    void display() {
+        if (front == -1) {
+            cout << "Deque is empty\n";
+            return;
+        }
+
+        cout << "Deque elements: ";
+
+        int i = front;
+
+        while (i != rear) {
+            cout << arr[i] << " ";
+            i = (i + 1) % SIZE;
+        }
+
+        cout << arr[rear] << endl;
+    }
+};
+
+int main() {
+    Deque dq;
+    int choice, value;
+
+    do {
+        cout << "\n1. Insert at Beginning";
+        cout << "\n2. Delete at Beginning";
+        cout << "\n3. Display";
+        cout << "\n4. Exit";
+
+        cout << "\nEnter choice: ";
+        cin >> choice;
+
+        switch (choice) {
+
+        case 1:
+            cout << "Enter value: ";
+            cin >> value;
+            dq.insertFront(value);
+            break;
+
+        case 2:
+            dq.deleteFront();
+            break;
+
+        case 3:
+            dq.display();
+            break;
+
+        case 4:
+            cout << "Program Ended\n";
+            break;
+
+        default:
+            cout << "Invalid Choice\n";
+        }
+
+    } while (choice != 4);
+
+    return 0;
+}
